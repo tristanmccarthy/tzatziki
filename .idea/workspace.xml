@@ -21,7 +21,7 @@
     <file path="/CucumberJsonTestReport.java" changelist="ad8fa9b5-c9e3-4ba3-8cb4-a0b7b14fd610" time="1384431596876" ignored="false" />
     <file path="/Test.java" changelist="ad8fa9b5-c9e3-4ba3-8cb4-a0b7b14fd610" time="1384432053831" ignored="false" />
     <file path="/DefectTracker.java" changelist="ad8fa9b5-c9e3-4ba3-8cb4-a0b7b14fd610" time="1384435209679" ignored="false" />
-    <file path="/JiraDefectTracker.java" changelist="ad8fa9b5-c9e3-4ba3-8cb4-a0b7b14fd610" time="1384445146658" ignored="false" />
+    <file path="/JiraDefectTracker.java" changelist="ad8fa9b5-c9e3-4ba3-8cb4-a0b7b14fd610" time="1384445636195" ignored="false" />
     <option name="TRACKING_ENABLED" value="true" />
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -116,7 +116,7 @@
       <file leaf-file-name="JiraDefectTracker.java" pinned="false" current="true" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/src/main/java/com/opencredo/tzatziki/defectTrackers/JiraDefectTracker.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state line="90" column="73" selection-start="3805" selection-end="3805" vertical-scroll-proportion="0.71385545">
+            <state line="82" column="83" selection-start="3425" selection-end="3425" vertical-scroll-proportion="0.7078313">
               <folding>
                 <element signature="imports" expanded="true" />
               </folding>
@@ -570,7 +570,7 @@
     <option name="INCLUDE_TEXT_INTO_PATCH" value="false" />
     <option name="INCLUDE_TEXT_INTO_SHELF" value="false" />
     <option name="SHOW_FILE_HISTORY_DETAILS" value="true" />
-    <option name="SHOW_VCS_ERROR_NOTIFICATIONS" value="true" />
+    <option name="SHOW_VCS_ERROR_NOTIFICATIONS" value="false" />
     <option name="SHOW_DIRTY_RECURSIVELY" value="false" />
     <option name="LIMIT_HISTORY" value="true" />
     <option name="MAXIMUM_HISTORY_ROWS" value="1000" />
@@ -688,7 +688,7 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/src/main/java/com/opencredo/tzatziki/defectTrackers/JiraDefectTracker.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="90" column="73" selection-start="3805" selection-end="3805" vertical-scroll-proportion="0.71385545">
+        <state line="82" column="83" selection-start="3425" selection-end="3425" vertical-scroll-proportion="0.7078313">
           <folding>
             <element signature="imports" expanded="true" />
           </folding>

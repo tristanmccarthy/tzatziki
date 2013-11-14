@@ -37,13 +37,6 @@ public class JiraDefectTracker implements DefectTracker {
         this.password = password;
     }
 
-    private CredentialsProvider getCredentialsProvider() {
-        CredentialsProvider credsProvider = new BasicCredentialsProvider();
-        credsProvider.setCredentials(AuthScope.ANY, new UsernamePasswordCredentials(username, password));
-
-        return credsProvider;
-    }
-
     public boolean defectExistsForTest(String testId) {
         String findDefectUrl = serverAddress + "/rest/api/2/search";
         String queryString = "?jql=text~" + testId;
@@ -51,8 +44,8 @@ public class JiraDefectTracker implements DefectTracker {
 
         try {
             HttpGet findIssues = new HttpGet(findDefectUrl + queryString);
-            findIssues.addHeader("Content-Type", "application/json");
-            findIssues.addHeader("Authorization", "Basic dHJpc3RhbiBtY2NhcnRoeTp0aGV2ZXJ2ZQ==");
+            findIssues.setHeader("Content-Type", "application/json");
+            findIssues.setHeader("Authorization", "Basic dG1jY2FydGh5OnRoZXZlcnZl");
 
             DefaultHttpClient client = new DefaultHttpClient();
             HttpResponse response = client.execute(findIssues);
@@ -86,8 +79,8 @@ public class JiraDefectTracker implements DefectTracker {
         System.out.println(createDefectJson);
         try {
             HttpPost createDefect = new HttpPost(createDefectUrl);
-            createDefect.addHeader("Content-Type", "application/json");
-            createDefect.addHeader("Authorization", "Basic dHJpc3RhbiBtY2NhcnRoeTp0aGV2ZXJ2ZQ==");
+            createDefect.setHeader("Content-Type", "application/json");
+            createDefect.setHeader("Authorization", "Basic dG1jY2FydGh5OnRoZXZlcnZl");
             createDefect.setEntity(new StringEntity(createDefectJson, "UTF-8"));
 
             DefaultHttpClient client = new DefaultHttpClient();
