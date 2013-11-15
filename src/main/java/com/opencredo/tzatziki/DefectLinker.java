@@ -10,55 +10,65 @@ import org.apache.maven.plugin.MojoExecutionException;
 import org.apache.maven.plugins.annotations.Mojo;
 import org.apache.maven.plugins.annotations.Parameter;
 
+import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Properties;
 
 @Mojo(name = "linkdefects")
 public class DefectLinker extends AbstractMojo {
 
-    @Parameter( property = "linkdefects.report-type", defaultValue = "cucumber-json")
+    //test report parameters
+    @Parameter( property = "linkdefects.reportType", defaultValue = "cucumber-json")
     private String reportType;
+    @Parameter( property = "linkdefects.reportFile")
+    private File reportFile;
 
-    @Parameter( property = "linkdefects.tracker-type", defaultValue = "jira")
+    //defect linker properties
+    @Parameter( property = "linkdefects.trackerType", defaultValue = "JIRA")
     private String trackerType;
 
-    @Parameter( property = "linkdefects.reportFile")
-    private String reportFile;
-
-    @Parameter( property = "linkdefects.new-defect-type", defaultValue = "Bug")
-    private String newDefectType;
+    //JIRA specific properties
+    @Parameter( property = "linkdefects.jiraSettings")
+    private Properties jiraSettings;
 
     public void execute() throws MojoExecutionException
     {
-        reportFile = "/home/tris/Documents/Cucumber-JVM-Parallel/target/cucumber-report/autocorrect/autocorrect.json";
+        reportFile = new File("/home/tris/Documents/Cucumber-JVM-Parallel/target/cucumber-report/autocorrect/autocorrect.json");
+        //create a report object
         TestReport report;
-        if (reportType.equals("cucumber-json")) { report = new CucumberJsonTestReport(reportFile); }
+        if (reportType.toUpperCase().equals("CUCUMBER-JSON")) { report = new CucumberJsonTestReport(reportFile); }
         else { throw new RuntimeException("Report type '" + reportType + "' not defined"); }
 
+        //create a tracker object
         DefectTracker tracker;
-        if(trackerType.equals("jira")) { tracker = new JiraDefectTracker("http://localhost:8080", "DP", "Auto Generated Bug", "", ""); }
+        if(trackerType.toUpperCase().equals("JIRA")) { tracker = new JiraDefectTracker(jiraSettings); }
         else { throw new RuntimeException("Tracker type '" + trackerType + "' not defined"); }
 
-        //store list of new failures (failing tests with no associated defect found) and known failures
-        List<Test> newFailures = new ArrayList<Test>();
-        List<Test> knownFailures = new ArrayList<Test>();
+        List<Test> newFailures = new ArrayList<>();
+        List<Test> knownFailures = new ArrayList<>();
+        List<Test> expectedFailures = new ArrayList<>();
+
+        //categorise test results as new failures, known failures or expected failures
         for(Test test:report.getFailingTests())
         {
-            if(!tracker.defectExistsForTest(test.id)) { newFailures.add(test); }
-            else { knownFailures.add(test); }
+            if(!tracker.defectExists(test))
+            {
+                newFailures.add(test);
+            }
+            else
+            {
+                knownFailures.add(test);
+                //expected failures exist as a subset of known failures
+                if(tracker.failureExpected(test)) { expectedFailures.add(test); }
+            }
         }
 
-        //create defects for new failures
-        for (Test test : newFailures)
-        {
-            tracker.createDefect(newDefectType, test.id);
-        }
+        //get the subset of known failures which are also expected
+        //NOTE: Current implementation assumes that if the defect type is the same as "new defect type", it's NOT an expected failure
 
-        //update report to ignore known AND expected failures (known might still be new unexpected failures)
-        //for (Test test : knownFailures)
-        //{
-        //    if(!tracker.isFailureExpected(test.id)) { report.ignoreTestFailure(test.id); }
-        //}
+
+        //update report to ignore expected failures
     }
 
 }

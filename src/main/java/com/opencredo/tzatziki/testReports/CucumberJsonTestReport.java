@@ -6,6 +6,7 @@ import org.codehaus.jackson.map.JsonMappingException;
 import org.codehaus.jackson.map.ObjectMapper;
 
 import java.io.BufferedReader;
+import java.io.File;
 import java.io.FileReader;
 import java.io.IOException;
 import java.util.*;
@@ -13,7 +14,7 @@ import java.util.*;
 public class CucumberJsonTestReport implements TestReport {
     private List<Test> tests = new ArrayList<Test>();
 
-    public CucumberJsonTestReport(String jsonReport)
+    public CucumberJsonTestReport(File jsonReport)
     {
         parseReport(jsonReport);
     }
@@ -25,7 +26,7 @@ public class CucumberJsonTestReport implements TestReport {
      *
      * @param jsonReport - Test report in Cucumber Json format
      */
-    private void parseReport(String jsonReport) {
+    private void parseReport(File jsonReport) {
         List<String> failingTestIds = new ArrayList<String>();
 
         try{
@@ -55,7 +56,8 @@ public class CucumberJsonTestReport implements TestReport {
                         JsonNode step = steps.next();
                         String testId = String.valueOf(step.get("name").asText().hashCode());
                         boolean testFailed = step.get("result").get("status").asText().equals("failed");
-                        Test test = new Test(testId, testFailed);
+                        String content = "Step failure: " + step.get("name").asText();
+                        Test test = new Test(testId, testFailed, content);
 
                         if (!tests.contains(test)) {tests.add(test);}
                     }
