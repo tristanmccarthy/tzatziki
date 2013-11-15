@@ -34,7 +34,7 @@ public class DefectLinker extends AbstractMojo {
 
     public void execute() throws MojoExecutionException
     {
-        reportFile = new File("/home/tris/Documents/Cucumber-JVM-Parallel/target/cucumber-report/autocorrect/autocorrect.json");
+        //reportFile = new File("/home/tris/Documents/Cucumber-JVM-Parallel/target/cucumber-report/autocorrect/autocorrect.json");
         //create a report object
         TestReport report;
         if (reportType.toUpperCase().equals("CUCUMBER-JSON")) { report = new CucumberJsonTestReport(reportFile); }
@@ -64,11 +64,11 @@ public class DefectLinker extends AbstractMojo {
             }
         }
 
-        //get the subset of known failures which are also expected
-        //NOTE: Current implementation assumes that if the defect type is the same as "new defect type", it's NOT an expected failure
+        //TODO create defect for new failures and update report to link to defect
 
+        //TODO update report to link to known defects
 
-        //update report to ignore expected failures
+        //TODO update report to ignore expected failures
     }
 
 }

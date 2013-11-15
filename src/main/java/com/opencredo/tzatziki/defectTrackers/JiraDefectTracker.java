@@ -1,33 +1,24 @@
 package com.opencredo.tzatziki.defectTrackers;
 
 import com.opencredo.tzatziki.testReports.Test;
+
+import org.apache.commons.codec.binary.Base64;
 import org.apache.http.HttpResponse;
-import org.apache.http.NameValuePair;
-import org.apache.http.auth.AuthScope;
-import org.apache.http.auth.UsernamePasswordCredentials;
-import org.apache.http.client.ClientProtocolException;
-import org.apache.http.client.CredentialsProvider;
-import org.apache.http.client.entity.UrlEncodedFormEntity;
+
 import org.apache.http.client.methods.HttpGet;
 import org.apache.http.client.methods.HttpPost;
-import org.apache.http.client.methods.HttpUriRequest;
 import org.apache.http.entity.StringEntity;
-import org.apache.http.impl.client.BasicCredentialsProvider;
 import org.apache.http.impl.client.DefaultHttpClient;
-import org.apache.http.message.BasicNameValuePair;
 import org.apache.http.util.EntityUtils;
 
 import java.io.IOException;
-import java.io.UnsupportedEncodingException;
-import java.util.ArrayList;
-import java.util.List;
 import java.util.Properties;
 
 public class JiraDefectTracker implements DefectTracker {
     private static final String PROPERTY_SERVER_ADDRESS = "jiraServerAddress";
     private static final String PROPERTY_USER_NAME = "jiraUserName";
     private static final String PROPERTY_USER_PASSWORD = "jiraUserPassword";
-    private static final String PROPERTY_PROJECT_NAME = "jiraProjectName";
+    private static final String PROPERTY_PROJECT_KEY = "jiraProjectKey";
     private static final String PROPERTY_NEW_DEFECT_TYPE = "jiraNewDefectType";
 
     private String serverAddress;
@@ -41,8 +32,14 @@ public class JiraDefectTracker implements DefectTracker {
         this.serverAddress = jiraSettings.getProperty(PROPERTY_SERVER_ADDRESS);
         this.username = jiraSettings.getProperty(PROPERTY_USER_NAME);
         this.password = jiraSettings.getProperty(PROPERTY_USER_PASSWORD);
-        this.projectName = jiraSettings.getProperty(PROPERTY_PROJECT_NAME);
+        this.projectName = jiraSettings.getProperty(PROPERTY_PROJECT_KEY);
         this.newDefectType = jiraSettings.getProperty(PROPERTY_NEW_DEFECT_TYPE);
+    }
+
+    private String generateAuthHeader(String username, String password) {
+        String credentials = username + ":" + password;
+        byte[] encoded =  org.apache.commons.codec.binary.Base64.encodeBase64(credentials.getBytes());
+        return new String(encoded);
     }
 
     private String search(Test test) {
@@ -51,9 +48,10 @@ public class JiraDefectTracker implements DefectTracker {
         String jsonResponse = "";
 
         try {
-            HttpGet findIssues = new HttpGet(findDefectUrl + queryString);
+            //HttpGet findIssues = new HttpGet(findDefectUrl + queryString);
+            HttpGet findIssues = new HttpGet("http://jira.atlassian.com/rest/api/2/search?jql=text~63456774345");
             findIssues.setHeader("Content-Type", "application/json");
-            findIssues.setHeader("Authorization", "Basic dG1jY2FydGh5OnRoZXZlcnZl");
+            findIssues.setHeader("Authorization", "Basic " + generateAuthHeader(username, password));
 
             DefaultHttpClient client = new DefaultHttpClient();
             HttpResponse response = client.execute(findIssues);
@@ -104,7 +102,7 @@ public class JiraDefectTracker implements DefectTracker {
         try {
             HttpPost createDefect = new HttpPost(createDefectUrl);
             createDefect.setHeader("Content-Type", "application/json");
-            createDefect.setHeader("Authorization", "Basic dG1jY2FydGh5OnRoZXZlcnZl");
+            createDefect.setHeader("Authorization", "Basic " + generateAuthHeader(username, password));
             createDefect.setEntity(new StringEntity(createDefectJson, "UTF-8"));
 
             DefaultHttpClient client = new DefaultHttpClient();
