@@ -68,13 +68,14 @@ public class DefectLinker extends AbstractMojo {
         for(Test test:newFailures)
         {
             Defect createdDefect = tracker.createDefect(test);
-            //TODO update report to link to newly created defect
+            report.appendText(test, "New defect created with id " + createdDefect.defectId);
         }
 
-        //TODO update report to link to existing defect
-
-        //TODO update report to ignore expected failures
-
+        //update report to ignore expected failures
+        for(Test test:expectedFailures)
+        {
+            report.ignoreFailure(test);
+        }
     }
 
 }

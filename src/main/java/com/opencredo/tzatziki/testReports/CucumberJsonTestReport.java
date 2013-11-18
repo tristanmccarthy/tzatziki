@@ -3,6 +3,8 @@ package com.opencredo.tzatziki.testReports;
 import com.opencredo.tzatziki.defectTrackers.Defect;
 import org.codehaus.jackson.JsonNode;
 import org.codehaus.jackson.map.ObjectMapper;
+import org.codehaus.jackson.node.ArrayNode;
+import org.codehaus.jackson.node.ObjectNode;
 
 import java.io.BufferedReader;
 import java.io.File;
@@ -11,6 +13,8 @@ import java.io.IOException;
 import java.util.*;
 
 public class CucumberJsonTestReport implements TestReport {
+    ObjectMapper mapper = new ObjectMapper();
+    private JsonNode rootNode;
     private List<Test> tests = new ArrayList<Test>();
 
     public CucumberJsonTestReport(File jsonReport)
@@ -29,10 +33,8 @@ public class CucumberJsonTestReport implements TestReport {
         List<String> failingTestIds = new ArrayList<String>();
 
         try{
-            ObjectMapper mapper = new ObjectMapper();
-
             BufferedReader fileReader = new BufferedReader(new FileReader(jsonReport));
-            JsonNode rootNode = mapper.readTree(fileReader);
+            rootNode = mapper.readTree(fileReader);
 
             Iterator<JsonNode> features = rootNode.getElements();
 
@@ -79,5 +81,13 @@ public class CucumberJsonTestReport implements TestReport {
 
     public List<Test> getAllTests() {
         return tests;
+    }
+
+    public void appendText (Test test, String text) {
+        //TODO
+    }
+
+    public void ignoreFailure(Test test) {
+        //TODO
     }
 }
