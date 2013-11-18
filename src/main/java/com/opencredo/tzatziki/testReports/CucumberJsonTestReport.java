@@ -1,8 +1,7 @@
 package com.opencredo.tzatziki.testReports;
 
-import org.codehaus.jackson.JsonGenerationException;
+import com.opencredo.tzatziki.defectTrackers.Defect;
 import org.codehaus.jackson.JsonNode;
-import org.codehaus.jackson.map.JsonMappingException;
 import org.codehaus.jackson.map.ObjectMapper;
 
 import java.io.BufferedReader;

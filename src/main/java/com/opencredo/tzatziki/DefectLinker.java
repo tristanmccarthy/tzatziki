@@ -1,5 +1,6 @@
 package com.opencredo.tzatziki;
 
+import com.opencredo.tzatziki.defectTrackers.Defect;
 import com.opencredo.tzatziki.defectTrackers.DefectTracker;
 import com.opencredo.tzatziki.defectTrackers.JiraDefectTracker;
 import com.opencredo.tzatziki.testReports.CucumberJsonTestReport;
@@ -34,7 +35,6 @@ public class DefectLinker extends AbstractMojo {
 
     public void execute() throws MojoExecutionException
     {
-        //reportFile = new File("/home/tris/Documents/Cucumber-JVM-Parallel/target/cucumber-report/autocorrect/autocorrect.json");
         //create a report object
         TestReport report;
         if (reportType.toUpperCase().equals("CUCUMBER-JSON")) { report = new CucumberJsonTestReport(reportFile); }
@@ -64,11 +64,17 @@ public class DefectLinker extends AbstractMojo {
             }
         }
 
-        //TODO create defect for new failures and update report to link to defect
+        //create defect for new failures and update report to link to defect
+        for(Test test:newFailures)
+        {
+            Defect createdDefect = tracker.createDefect(test);
+            //TODO update report to link to newly created defect
+        }
 
-        //TODO update report to link to known defects
+        //TODO update report to link to existing defect
 
         //TODO update report to ignore expected failures
+
     }
 
 }

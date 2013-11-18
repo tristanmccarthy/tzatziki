@@ -10,5 +10,5 @@ public interface DefectTracker {
 
     public boolean failureExpected(Test test);
 
-    public void createDefect(Test test);
+    public Defect createDefect(Test test);
 }
