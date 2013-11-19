@@ -3,8 +3,6 @@ package com.opencredo.tzatziki.testReports;
 import com.opencredo.tzatziki.defectTrackers.Defect;
 import org.codehaus.jackson.JsonNode;
 import org.codehaus.jackson.map.ObjectMapper;
-import org.codehaus.jackson.node.ArrayNode;
-import org.codehaus.jackson.node.ObjectNode;
 
 import java.io.BufferedReader;
 import java.io.File;
